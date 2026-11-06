@@ -168,6 +168,8 @@ export default function App() {
               items={filtered}
               sisaKuota={sisaKuota}
               onAdd={handleAdd}
+              totalKursi={totalKursi}
+              maxKursi={MAX_KURSI}
             />
           )}
         </main>
@@ -177,6 +179,8 @@ export default function App() {
             rows={rows}
             onChangeQty={handleChangeQty}
             onRemove={handleRemove}
+            totalKursi={totalKursi}
+            maxKursi={MAX_KURSI}
           />
           <Summary
             totalKursi={totalKursi}

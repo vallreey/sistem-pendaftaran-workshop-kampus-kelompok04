@@ -1,6 +1,6 @@
 import { rupiah } from '../utils.js'
 function Catalog(props) {
-  const { items, sisaKuota, onAdd } = props
+  const { items, sisaKuota, onAdd, totalKursi, maxKursi } = props
 
   if (items.length === 0) {
     return (
@@ -45,7 +45,7 @@ function Catalog(props) {
                 type="button"
                 className="btn btn-primary"
                 onClick={() => onAdd(workshop.id)}
-                disabled={penuh}>Tambah</button>
+                disabled={penuh || totalKursi >= maxKursi}>Tambah</button>
             </li>
             )
           })}
