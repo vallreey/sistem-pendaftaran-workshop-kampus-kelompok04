@@ -6,13 +6,13 @@ import Summary from './components/Summary.jsx'
 import { MAX_JENIS, MAX_KURSI } from './utils.js'
 
 export default function App() {
-  // --- data dari fetch ---
+  // ini tuh data dari fetch
   const [workshops, setWorkshops] = useState([])
   const [status, setStatus] = useState('loading') // loading | success | error
   const [errorMsg, setErrorMsg] = useState('')
   const [reloadKey, setReloadKey] = useState(0)
 
-  // --- pencarian & filter ---
+  // ini buat pencarian & filter ---
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState('Semua')
 

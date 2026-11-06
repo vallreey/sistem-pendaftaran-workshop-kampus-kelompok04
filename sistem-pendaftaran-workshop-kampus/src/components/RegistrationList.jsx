@@ -7,7 +7,6 @@ function Row({ row, onChangeQty, onRemove }) {
     draft: String(row.qty),
     error: '',
   })
-
   if (input.qty !== row.qty) {
     setInput({ qty: row.qty, draft: String(row.qty), error: '' })
   }
