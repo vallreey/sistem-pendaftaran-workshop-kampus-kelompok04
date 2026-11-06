@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { rupiah } from '../utils.js'
 
-function Row({ row, onChangeQty, onRemove }) {
+function Row({ row, onChangeQty, onRemove, maxQty }) {
   const [input, setInput] = useState({
     qty: row.qty,
     draft: String(row.qty),
@@ -32,7 +32,7 @@ function Row({ row, onChangeQty, onRemove }) {
       <div className="reg-bottom">
         <div className="field field-qty">
           <label htmlFor={inputId}>Jumlah kursi {row.nama}</label>
-          <input id={inputId} type="number" inputMode="numeric" min="1" step="1" 
+          <input id={inputId} type="number" inputMode="numeric" min="1" max={maxQty} step="1"
           value={input.qty === row.qty ? input.draft : row.qty} onChange={handleChange} onBlur={handleBlur} 
           aria-invalid={error ? 'true' : 'false'} aria-describedby={error ? `${inputId}-err` : undefined}
           />
@@ -45,7 +45,13 @@ function Row({ row, onChangeQty, onRemove }) {
   )
 }
 
-export default function RegistrationList({ rows, onChangeQty, onRemove }) {
+export default function RegistrationList({
+  rows,
+  onChangeQty,
+  onRemove,
+  totalKursi,
+  maxKursi,
+}) {
   return (
     <section className="panel registration-panel" id="pendaftaran" aria-label="Daftar pendaftaran">
       <div className="panel-heading">

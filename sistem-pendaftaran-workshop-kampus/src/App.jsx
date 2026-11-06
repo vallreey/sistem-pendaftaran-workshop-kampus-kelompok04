@@ -195,6 +195,8 @@ export default function App() {
               items={filtered}
               sisaKuota={sisaKuota}
               onAdd={handleAdd}
+              totalKursi={totalKursi}
+              maxKursi={MAX_KURSI}
             />
           )}
           </section>

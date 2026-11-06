@@ -1,6 +1,18 @@
 import { rupiah } from '../utils.js'
+function Catalog(props) {
+  const { items, sisaKuota, onAdd, totalKursi, maxKursi } = props
 
-export default function Catalog({ items, sisaKuota, onAdd }) {
+  if (items.length === 0) {
+    return (
+      <section>
+        <p className="count">0 workshop ditemukan</p>
+        <p className="state">
+          Workshop tidak ditemukan. Coba ganti keyword atau kategorinya ya.
+        </p>
+      </section>
+    )
+  }
+
   return (
     <section className="catalog-section" aria-label="Katalog workshop">
       <div className="catalog-status">
@@ -68,7 +80,7 @@ export default function Catalog({ items, sisaKuota, onAdd }) {
             )
           })}
         </ul>
-      )}
+      )
     </section>
   )
 }
