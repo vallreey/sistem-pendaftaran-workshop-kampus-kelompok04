@@ -1,5 +1,4 @@
 import { rupiah } from '../utils.js'
-
 function Catalog(props) {
   const { items, sisaKuota, onAdd } = props
 
@@ -54,3 +53,5 @@ function Catalog(props) {
     </section>
   )
 }
+
+export default Catalog

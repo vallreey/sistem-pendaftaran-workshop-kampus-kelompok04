@@ -8,17 +8,17 @@ import { MAX_JENIS, MAX_KURSI } from './utils.js'
 export default function App() {
   // ini tuh data dari fetch
   const [workshops, setWorkshops] = useState([])
-  const [status, setStatus] = useState('loading') // loading | success | error
+  const [status, setStatus] = useState('loading')
   const [errorMsg, setErrorMsg] = useState('')
   const [reloadKey, setReloadKey] = useState(0)
 
-  // ini buat pencarian & filter ---
+  // ini buat pencarian sama filter
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState('Semua')
 
-  // --- pilihan pengguna: [{ id, qty }] ---
+  // pilihan user
   const [selected, setSelected] = useState([])
-  const [notice, setNotice] = useState(null) // { type: 'error' | 'ok', text }
+  const [notice, setNotice] = useState(null)
 
   useEffect(() => {
     let cancelled = false
@@ -61,7 +61,7 @@ export default function App() {
     return { ok: false, message: text }
   }
 
-  // Menambah 1 kursi dari katalog
+  // Buat nambah 1 kursi dari katalog
   const handleAdd = (id) => {
     const w = byId[id]
     if (!w) return
@@ -83,7 +83,7 @@ export default function App() {
     return { ok: true }
   }
 
-  // Mengubah jumlah dari daftar. Nilai berasal dari input (string)
+  // Buat ngubah jumlah dari daftar
   const handleChangeQty = (id, raw) => {
     const w = byId[id]
     const text = String(raw).trim()
@@ -105,7 +105,7 @@ export default function App() {
     setNotice({ type: 'ok', text: `${byId[id].nama} dihapus dari daftar.` })
   }
 
-  // Pencarian + filter bersamaan; tidak menyentuh state `selected`
+  // Pencarian + filter bersamaan
   const filtered = workshops.filter((w) => {
     const cocokNama = w.nama.toLowerCase().includes(query.trim().toLowerCase())
     const cocokKategori = category === 'Semua' || w.kategori === category

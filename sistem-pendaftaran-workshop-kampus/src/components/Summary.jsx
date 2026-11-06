@@ -19,7 +19,7 @@ export default function Summary({ totalKursi, jenis, sisaBatas, totalBiaya }) {
     <section className="panel summary" aria-labelledby="ringkasan-title">
       <h2 id="ringkasan-title">Ringkasan</h2>
 
-      {/* Meter pemakaian batas kursi (dekoratif, angkanya sudah ada di teks) */}
+      {/* Meter pemakaian batas kursi*/}
       <div className="summary__meter" aria-hidden="true">
         {Array.from({ length: MAX_KURSI }, (_, i) => (
           <span key={i} className={i < totalKursi ? 'is-on' : ''} />

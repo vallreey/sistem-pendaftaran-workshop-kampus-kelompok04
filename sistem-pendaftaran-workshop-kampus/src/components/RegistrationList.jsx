@@ -49,13 +49,8 @@ export default function RegistrationList({ rows, onChangeQty, onRemove }) {
   return (
     <section className="panel" aria-label="Daftar pendaftaran">
       <h2>Daftar pendaftaran</h2>
-      {rows.length === 0
-        ? <p className="state">Silahkan pilih workshop. Pencet Tambah di katalog.</p>
-        : <ul className="reg-list">
-            {rows.map((row) => (
-              <Row key={row.id} row={row} onChangeQty={onChangeQty} onRemove={onRemove} />
-            ))}
-          </ul>}
+      {rows.length === 0 ? <p className="state">Silahkan pilih workshop. Pencet Tambah di katalog.</p> : <ul className="reg-list">
+        {rows.map((row) => (<Row key={row.id} row={row} onChangeQty={onChangeQty} onRemove={onRemove} />))}</ul>}
     </section>
   )
 }
