@@ -16,33 +16,31 @@ export default function Summary({ totalKursi, jenis, sisaBatas, totalBiaya }) {
   }
 
   return (
-    <section className="panel summary" aria-labelledby="ringkasan-title">
-      <h2 id="ringkasan-title">Ringkasan</h2>
-
-      {/* Meter pemakaian batas kursi*/}
-      <div className="summary__meter" aria-hidden="true">
-        {Array.from({ length: MAX_KURSI }, (_, i) => (
-          <span key={i} className={i < totalKursi ? 'is-on' : ''} />
-        ))}
-      </div>
-
+    <section className="panel summary" id="ringkasan" aria-labelledby="ringkasan-title">
+      <h2 id="ringkasan-title"><span className="heading-icon" aria-hidden="true">▦</span>Ringkasan Transaksi</h2>
       <div aria-live="polite" aria-atomic="true">
-        <dl>
+        <dl className="summary-limits">
           <div>
-            <dt>Jumlah kursi</dt>
-            <dd>{totalKursi}</dd>
+            <dt>Batas Jenis Workshop:</dt>
+            <dd className={jenis >= MAX_JENIS ? 'is-limit' : ''}>{jenis} dari {MAX_JENIS}</dd>
           </div>
           <div>
-            <dt>Jenis workshop</dt>
-            <dd className={jenis >= MAX_JENIS ? 'is-limit' : ''}>
-              {jenis} dari {MAX_JENIS}
-            </dd>
+            <dt>Kapasitas Kursi (Maks {MAX_KURSI}):</dt>
+            <dd className={sisaBatas === 0 ? 'is-limit' : ''}>{totalKursi} kursi</dd>
+          </div>
+        </dl>
+        <p className="remaining-seats">
+          <span>Sisa kuota pemesanan:</span>
+          <strong>{sisaBatas} kursi</strong>
+        </p>
+        <dl className="summary-costs">
+          <div>
+            <dt>Subtotal</dt>
+            <dd>{rupiah(totalBiaya)}</dd>
           </div>
           <div>
-            <dt>Sisa batas kursi</dt>
-            <dd className={sisaBatas === 0 ? 'is-limit' : ''}>
-              {sisaBatas} dari {MAX_KURSI}
-            </dd>
+            <dt>Biaya Layanan Kampus</dt>
+            <dd className="free-label">Gratis</dd>
           </div>
           <div className="total">
             <dt>Total biaya</dt>
@@ -58,6 +56,13 @@ export default function Summary({ totalKursi, jenis, sisaBatas, totalBiaya }) {
           </ul>
         )}
       </div>
+      <p className="payment-note">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="5" y="10" width="14" height="10" rx="2" />
+          <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+        </svg>
+        Pembayaran aman via Virtual Account Bank
+      </p>
     </section>
   )
 }

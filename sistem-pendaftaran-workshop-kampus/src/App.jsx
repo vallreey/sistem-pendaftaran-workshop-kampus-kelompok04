@@ -109,22 +109,43 @@ export default function App() {
 
   return (
     <div className="page">
-      <header className="masthead">
-        <h1>Pendaftaran Workshop Kampus</h1>
-        <p>Pilih maksimal {MAX_JENIS} jenis workshop dan {MAX_KURSI} kursi dalam satu transaksi.</p>
+      <header className="topbar">
+        <a className="brand" href="#beranda" aria-label="KampusCraft Portal Workshop">
+          <span className="brand-mark" aria-hidden="true">K</span>
+          <span className="brand-copy">
+            <strong>Kampus<span>Craft</span></strong>
+            <small>Portal Workshop</small>
+          </span>
+        </a>
+        <nav className="top-nav" aria-label="Navigasi utama">
+          <a className="is-active" href="#katalog">Katalog</a>
+          <a href="#pendaftaran">Pendaftaran</a>
+          <a href="#ringkasan">Ringkasan</a>
+        </nav>
       </header>
 
-      <div className="layout">
-        <main className="main-col">
-          <Controls
-            query={query}
-            onQueryChange={setQuery}
-            category={category}
-            onCategoryChange={setCategory}
-            categories={categories}
-            disabled={status !== 'success'}
-          />
+      <main className="page-shell" id="beranda">
+        <section className="hero">
+          <div className="semester-label"><span /> Semester Genap 2025</div>
+          <p className="hero-eyebrow">Kuota Terbatas Mahasiswa</p>
+          <h1>Pendaftaran <span>Workshop Kampus</span></h1>
+          <p className="hero-description">
+            Tingkatkan keterampilan teknologi dan portofolio Anda. Pilih maksimal{' '}
+            <strong>{MAX_JENIS} jenis workshop</strong> dan total{' '}
+            <strong>{MAX_KURSI} kursi</strong> dalam satu transaksi.
+          </p>
+        </section>
 
+        <div className="layout">
+          <section className="main-col" id="katalog" aria-label="Katalog workshop">
+            <Controls
+              query={query}
+              onQueryChange={setQuery}
+              category={category}
+              onCategoryChange={setCategory}
+              categories={categories}
+              disabled={status !== 'success'}
+            />
           {notice && (
             <p
               className={`notice notice-${notice.type}`}
@@ -162,22 +183,32 @@ export default function App() {
               onAdd={handleAdd}
             />
           )}
-        </main>
+          </section>
 
-        <aside className="side-col" aria-label="Pendaftaran Anda">
-          <RegistrationList
-            rows={rows}
-            onChangeQty={handleChangeQty}
-            onRemove={handleRemove}
-          />
-          <Summary
-            totalKursi={totalKursi}
-            jenis={jenis}
-            sisaBatas={sisaBatas}
-            totalBiaya={totalBiaya}
-          />
-        </aside>
-      </div>
+          <aside className="side-col" aria-label="Pendaftaran Anda">
+            <RegistrationList
+              rows={rows}
+              onChangeQty={handleChangeQty}
+              onRemove={handleRemove}
+            />
+            <Summary
+              totalKursi={totalKursi}
+              jenis={jenis}
+              sisaBatas={sisaBatas}
+              totalBiaya={totalBiaya}
+            />
+          </aside>
+        </div>
+      </main>
+
+      <footer className="footer">
+        <span><strong>KampusCraft Workshop</strong> · Sistem Pendaftaran Akademik Terpadu</span>
+        <span className="footer-links">
+          <a href="#katalog">Katalog Workshop</a>
+          <a href="#pendaftaran">Pendaftaran</a>
+          <a href="#ringkasan">Ringkasan Transaksi</a>
+        </span>
+      </footer>
     </div>
   )
 }

@@ -2,8 +2,11 @@ import { rupiah } from '../utils.js'
 
 export default function Catalog({ items, sisaKuota, onAdd }) {
   return (
-    <section aria-label="Katalog workshop">
-      <p className="count" role="status">{items.length} workshop ditemukan</p>
+    <section className="catalog-section" aria-label="Katalog workshop">
+      <div className="catalog-status">
+        <p className="count" role="status"><span />{items.length} workshop ditemukan</p>
+        <span className="catalog-note">Biaya &amp; kuota terverifikasi</span>
+      </div>
 
       {items.length === 0 ? (
         <p className="state">Tidak ada workshop yang cocok dengan pencarian atau filter.</p>
@@ -12,11 +15,17 @@ export default function Catalog({ items, sisaKuota, onAdd }) {
           {items.map((w) => {
             const sisa = sisaKuota(w.id)
             const habis = sisa <= 0
+            const progress = w.kuota > 0 ? (sisa / w.kuota) * 100 : 100
             return (
               <li key={w.id} className={`card ${habis ? 'card-full' : ''}`}>
                 <div className="card-head">
-                  <h3>{w.nama}</h3>
-                  <span className="tag">{w.kategori}</span>
+                  <div className="card-title">
+                    <span className={`category-icon category-${w.kategori.toLowerCase()}`} aria-hidden="true">
+                      {w.kategori.slice(0, 2).toUpperCase()}
+                    </span>
+                    <h3>{w.nama}</h3>
+                  </div>
+                  <span className={`tag tag-${w.kategori.toLowerCase()}`}>{w.kategori}</span>
                 </div>
                 <dl className="card-meta">
                   <div>
@@ -24,18 +33,37 @@ export default function Catalog({ items, sisaKuota, onAdd }) {
                     <dd>{rupiah(w.harga)}</dd>
                   </div>
                   <div>
-                    <dt>Sisa ketersediaan</dt>
-                    <dd className={habis ? 'text-danger' : ''}>
-                      {habis ? 'Penuh' : `${sisa} kursi`}
-                    </dd>
+                    <dt>Kategori Workshop</dt>
+                    <dd>{w.kategori}</dd>
                   </div>
                 </dl>
+                <div className="stock">
+                  <div className="stock-label">
+                    <span>Sisa ketersediaan:</span>
+                    <strong className={habis ? 'text-danger' : ''}>
+                      {habis ? 'Kuota Penuh' : `${sisa} kursi`}
+                    </strong>
+                  </div>
+                  <div
+                    className={`stock-track ${habis ? 'is-empty' : ''}`}
+                    role="progressbar"
+                    aria-label={`Sisa kuota ${w.nama}`}
+                    aria-valuemin="0"
+                    aria-valuemax={w.kuota}
+                    aria-valuenow={sisa}
+                  >
+                    <span style={{ width: `${progress}%` }} />
+                  </div>
+                </div>
                 <button
                   type="button"
                   className="btn btn-primary"
                   onClick={() => onAdd(w.id)}
                   disabled={w.kuota === 0}
-                >Tambah</button>
+                >
+                  <span aria-hidden="true">＋</span>
+                  {habis ? 'Kuota Penuh' : 'Tambah ke Daftar'}
+                </button>
               </li>
             )
           })}
