@@ -24,6 +24,9 @@ export default function App() {
       })
       .then((data) => {
         if (cancelled) return
+        if (!Array.isArray(data)) {
+          throw new Error('Format data workshop tidak valid')
+        }
         setWorkshops(data)
         setStatus('success')
       })
@@ -155,16 +158,26 @@ export default function App() {
             </p>
           )}
 
-          {status === 'loading' && (
-            <p className="state" role="status">Memuat data workshop…</p>
-          )}
-
-          {status === 'error' && (
-            <div className="state state-error" role="alert">
-              <p>Data gagal dimuat: {errorMsg}.</p>
+          <div
+            className={`data-status data-status-${status}`}
+            role={status === 'error' ? 'alert' : 'status'}
+            aria-live={status === 'error' ? 'assertive' : 'polite'}
+          >
+            <span className="data-status-icon" aria-hidden="true">
+              {status === 'loading' && <span className="loading-spinner" />}
+              {status === 'success' && '✓'}
+              {status === 'error' && '!'}
+            </span>
+            {status === 'loading' && <p>Sedang mengambil data workshop...</p>}
+            {status === 'success' && (
+              <p>Data workshop berhasil dimuat. {workshops.length} workshop tersedia.</p>
+            )}
+            {status === 'error' && (
+              <>
+                <p>Data workshop gagal dimuat: {errorMsg}.</p>
               <button
                 type="button"
-                className="btn"
+                className="btn retry-button"
                 onClick={() => {
                   setStatus('loading')
                   setErrorMsg('')
@@ -173,8 +186,9 @@ export default function App() {
               >
                 Coba Lagi
               </button>
-            </div>
-          )}
+              </>
+            )}
+          </div>
 
           {status === 'success' && (
             <Catalog
