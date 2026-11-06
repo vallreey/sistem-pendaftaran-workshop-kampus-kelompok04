@@ -1,0 +1,8 @@
+[
+  { "id": "W01", "nama": "HTML dan CSS", "kategori": "Frontend", "harga": 25000, "kuota": 8 },
+  { "id": "W02", "nama": "React Dasar", "kategori": "Frontend", "harga": 35000, "kuota": 6 },
+  { "id": "W03", "nama": "Dasar API", "kategori": "Backend", "harga": 30000, "kuota": 0 },
+  { "id": "W04", "nama": "Desain UI UX", "kategori": "Desain", "harga": 25000, "kuota": 5 },
+  { "id": "W05", "nama": "Git Kolaborasi", "kategori": "Kolaborasi", "harga": 20000, "kuota": 4 },
+  { "id": "W06", "nama": "Tailwind CSS", "kategori": "Frontend", "harga": 30000, "kuota": 3 }
+]
