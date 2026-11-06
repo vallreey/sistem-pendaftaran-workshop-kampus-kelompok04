@@ -24,6 +24,9 @@ export default function App() {
       })
       .then((data) => {
         if (cancelled) return
+        if (!Array.isArray(data)) {
+          throw new Error('Format data workshop tidak valid')
+        }
         setWorkshops(data)
         setStatus('success')
       })
@@ -109,22 +112,43 @@ export default function App() {
 
   return (
     <div className="page">
-      <header className="masthead">
-        <h1>Pendaftaran Workshop Kampus</h1>
-        <p>Pilih maksimal {MAX_JENIS} jenis workshop dan {MAX_KURSI} kursi dalam satu transaksi.</p>
+      <header className="topbar">
+        <a className="brand" href="#beranda" aria-label="KampusCraft Portal Workshop">
+          <span className="brand-mark" aria-hidden="true">K</span>
+          <span className="brand-copy">
+            <strong>Kampus<span>Craft</span></strong>
+            <small>Portal Workshop</small>
+          </span>
+        </a>
+        <nav className="top-nav" aria-label="Navigasi utama">
+          <a className="is-active" href="#katalog">Katalog</a>
+          <a href="#pendaftaran">Pendaftaran</a>
+          <a href="#ringkasan">Ringkasan</a>
+        </nav>
       </header>
 
-      <div className="layout">
-        <main className="main-col">
-          <Controls
-            query={query}
-            onQueryChange={setQuery}
-            category={category}
-            onCategoryChange={setCategory}
-            categories={categories}
-            disabled={status !== 'success'}
-          />
+      <main className="page-shell" id="beranda">
+        <section className="hero">
+          <div className="semester-label"><span /> Semester Genap 2026</div>
+          <p className="hero-eyebrow">Kuota Terbatas Mahasiswa</p>
+          <h1>Pendaftaran <span>Workshop Kampus</span></h1>
+          <p className="hero-description">
+            Tingkatkan keterampilan teknologi dan portofolio Anda. Pilih maksimal{' '}
+            <strong>{MAX_JENIS} jenis workshop</strong> dan total{' '}
+            <strong>{MAX_KURSI} kursi</strong> dalam satu transaksi.
+          </p>
+        </section>
 
+        <div className="layout">
+          <section className="main-col" id="katalog" aria-label="Katalog workshop">
+            <Controls
+              query={query}
+              onQueryChange={setQuery}
+              category={category}
+              onCategoryChange={setCategory}
+              categories={categories}
+              disabled={status !== 'success'}
+            />
           {notice && (
             <p
               className={`notice notice-${notice.type}`}
@@ -134,16 +158,26 @@ export default function App() {
             </p>
           )}
 
-          {status === 'loading' && (
-            <p className="state" role="status">Memuat data workshop…</p>
-          )}
-
-          {status === 'error' && (
-            <div className="state state-error" role="alert">
-              <p>Data gagal dimuat: {errorMsg}.</p>
+          <div
+            className={`data-status data-status-${status}`}
+            role={status === 'error' ? 'alert' : 'status'}
+            aria-live={status === 'error' ? 'assertive' : 'polite'}
+          >
+            <span className="data-status-icon" aria-hidden="true">
+              {status === 'loading' && <span className="loading-spinner" />}
+              {status === 'success' && '✓'}
+              {status === 'error' && '!'}
+            </span>
+            {status === 'loading' && <p>Sedang mengambil data workshop...</p>}
+            {status === 'success' && (
+              <p>Data workshop berhasil dimuat. {workshops.length} workshop tersedia.</p>
+            )}
+            {status === 'error' && (
+              <>
+                <p>Data workshop gagal dimuat: {errorMsg}.</p>
               <button
                 type="button"
-                className="btn"
+                className="btn retry-button"
                 onClick={() => {
                   setStatus('loading')
                   setErrorMsg('')
@@ -152,8 +186,9 @@ export default function App() {
               >
                 Coba Lagi
               </button>
-            </div>
-          )}
+              </>
+            )}
+          </div>
 
           {status === 'success' && (
             <Catalog
@@ -164,24 +199,32 @@ export default function App() {
               maxKursi={MAX_KURSI}
             />
           )}
-        </main>
+          </section>
 
-        <aside className="side-col" aria-label="Pendaftaran Anda">
-          <RegistrationList
-            rows={rows}
-            onChangeQty={handleChangeQty}
-            onRemove={handleRemove}
-            totalKursi={totalKursi}
-            maxKursi={MAX_KURSI}
-          />
-          <Summary
-            totalKursi={totalKursi}
-            jenis={jenis}
-            sisaBatas={sisaBatas}
-            totalBiaya={totalBiaya}
-          />
-        </aside>
-      </div>
+          <aside className="side-col" aria-label="Pendaftaran Anda">
+            <RegistrationList
+              rows={rows}
+              onChangeQty={handleChangeQty}
+              onRemove={handleRemove}
+            />
+            <Summary
+              totalKursi={totalKursi}
+              jenis={jenis}
+              sisaBatas={sisaBatas}
+              totalBiaya={totalBiaya}
+            />
+          </aside>
+        </div>
+      </main>
+
+      <footer className="footer">
+        <span><strong>KampusCraft Workshop</strong> · Sistem Pendaftaran Akademik Terpadu</span>
+        <span className="footer-links">
+          <a href="#katalog">Katalog Workshop</a>
+          <a href="#pendaftaran">Pendaftaran</a>
+          <a href="#ringkasan">Ringkasan Transaksi</a>
+        </span>
+      </footer>
     </div>
   )
 }

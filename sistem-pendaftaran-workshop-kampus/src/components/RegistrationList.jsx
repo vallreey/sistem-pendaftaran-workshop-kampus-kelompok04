@@ -53,28 +53,21 @@ export default function RegistrationList({
   maxKursi,
 }) {
   return (
-    <section className="panel" aria-label="Daftar pendaftaran">
-      <h2>Daftar pendaftaran</h2>
-
+    <section className="panel registration-panel" id="pendaftaran" aria-label="Daftar pendaftaran">
+      <div className="panel-heading">
+        <h2><span className="heading-icon" aria-hidden="true">＋</span>Daftar Pendaftaran</h2>
+        <span className="item-count">{rows.length} Item</span>
+      </div>
       {rows.length === 0 ? (
-        <p className="state">
-          Silahkan pilih workshop. Pencet Tambah di katalog.
-        </p>
+        <div className="empty-registration">
+          <span className="empty-icon" aria-hidden="true">▤</span>
+          <p>Silakan pilih workshop di katalog sebelah kiri untuk mulai mendaftar.</p>
+        </div>
       ) : (
         <ul className="reg-list">
-          {rows.map((row) => {
-            const maxQty = row.qty + (maxKursi - totalKursi)
-
-            return (
-              <Row
-                key={row.id}
-                row={row}
-                onChangeQty={onChangeQty}
-                onRemove={onRemove}
-                maxQty={maxQty}
-              />
-            )
-          })}
+          {rows.map((row) => (
+            <Row key={row.id} row={row} onChangeQty={onChangeQty} onRemove={onRemove} />
+          ))}
         </ul>
       )}
     </section>
