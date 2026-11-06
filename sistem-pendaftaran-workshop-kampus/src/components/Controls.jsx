@@ -25,7 +25,8 @@ export default function Controls({
           id="kategori"
           value={category}
           onChange={(e) => onCategoryChange(e.target.value)}
-          disabled={disabled}>
+          disabled={disabled}
+        >
           {categories.map((c) => (
             <option key={c} value={c}>
               {c}

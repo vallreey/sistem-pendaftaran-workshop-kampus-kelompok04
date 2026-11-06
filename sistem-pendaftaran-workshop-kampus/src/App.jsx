@@ -6,17 +6,12 @@ import Summary from './components/Summary.jsx'
 import { MAX_JENIS, MAX_KURSI } from './utils.js'
 
 export default function App() {
-  // ini tuh data dari fetch
   const [workshops, setWorkshops] = useState([])
   const [status, setStatus] = useState('loading')
   const [errorMsg, setErrorMsg] = useState('')
   const [reloadKey, setReloadKey] = useState(0)
-
-  // ini buat pencarian sama filter
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState('Semua')
-
-  // pilihan user
   const [selected, setSelected] = useState([])
   const [notice, setNotice] = useState(null)
 
@@ -49,7 +44,7 @@ export default function App() {
   }, [workshops])
 
   const qtyOf = (id) => selected.find((s) => s.id === id)?.qty ?? 0
-  const sisaKuota = (id) => (byId[id] ? byId[id].stok - qtyOf(id) : 0)
+  const sisaKuota = (id) => (byId[id] ? byId[id].kuota - qtyOf(id) : 0)
 
   const totalKursi = selected.reduce((sum, s) => sum + s.qty, 0)
   const jenis = selected.length
@@ -61,16 +56,15 @@ export default function App() {
     return { ok: false, message: text }
   }
 
-  // Buat nambah 1 kursi dari katalog
   const handleAdd = (id) => {
     const w = byId[id]
     if (!w) return
-    if (w.stok === 0) return fail(`${w.nama} sudah penuh dan tidak dapat dipilih.`)
+    if (w.kuota === 0) return fail(`${w.nama} sudah penuh dan tidak dapat dipilih.`)
     const current = qtyOf(id)
     if (current === 0 && jenis >= MAX_JENIS)
       return fail(`Maksimal ${MAX_JENIS} jenis workshop dalam satu transaksi.`)
-    if (current + 1 > w.stok)
-      return fail(`Kuota ${w.nama} hanya ${w.stok} kursi.`)
+    if (current + 1 > w.kuota)
+      return fail(`Kuota ${w.nama} hanya ${w.kuota} kursi.`)
     if (totalKursi + 1 > MAX_KURSI)
       return fail(`Maksimal ${MAX_KURSI} kursi dalam satu transaksi.`)
 
@@ -83,14 +77,13 @@ export default function App() {
     return { ok: true }
   }
 
-  // Buat ngubah jumlah dari daftar
   const handleChangeQty = (id, raw) => {
     const w = byId[id]
     const text = String(raw).trim()
     if (!/^\d+$/.test(text)) return fail('Jumlah harus berupa bilangan bulat positif.')
     const value = Number(text)
     if (value < 1) return fail('Jumlah harus berupa bilangan bulat positif.')
-    if (value > w.stok) return fail(`Kuota ${w.nama} hanya ${w.stok} kursi.`)
+    if (value > w.kuota) return fail(`Kuota ${w.nama} hanya ${w.kuota} kursi.`)
     const lainnya = totalKursi - qtyOf(id)
     if (lainnya + value > MAX_KURSI)
       return fail(`Maksimal ${MAX_KURSI} kursi dalam satu transaksi.`)
@@ -105,7 +98,6 @@ export default function App() {
     setNotice({ type: 'ok', text: `${byId[id].nama} dihapus dari daftar.` })
   }
 
-  // Pencarian + filter bersamaan
   const filtered = workshops.filter((w) => {
     const cocokNama = w.nama.toLowerCase().includes(query.trim().toLowerCase())
     const cocokKategori = category === 'Semua' || w.kategori === category

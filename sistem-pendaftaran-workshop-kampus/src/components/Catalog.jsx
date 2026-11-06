@@ -50,8 +50,7 @@ function Catalog(props) {
             )
           })}
         </ul>
+      )}
     </section>
   )
 }
-
-export default Catalog
