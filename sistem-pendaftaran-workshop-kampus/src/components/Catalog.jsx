@@ -50,7 +50,7 @@ function Catalog(props) {
             )
           })}
         </ul>
-      )}
+      )
     </section>
   )
 }
