@@ -126,7 +126,7 @@ export default function App() {
 
       <main className="page-shell" id="beranda">
         <section className="hero">
-          <div className="semester-label"><span /> Semester Genap 2025</div>
+          <div className="semester-label"><span /> Semester Genap 2026</div>
           <p className="hero-eyebrow">Kuota Terbatas Mahasiswa</p>
           <h1>Pendaftaran <span>Workshop Kampus</span></h1>
           <p className="hero-description">
